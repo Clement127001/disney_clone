@@ -1,6 +1,14 @@
 import styled from "styled-components";
+import { auth, provider } from "../firebase";
+import { signInWithPopup } from "firebase/auth";
+const MainNavigation = () => {
+  const handleAuth = async () => {
+    const res = await signInWithPopup(auth, provider);
 
-const MainNavigation = (props) => {
+    if (res) {
+      console.log(res);
+    }
+  };
   return (
     <Nav>
       <Logo href="/">
@@ -34,7 +42,7 @@ const MainNavigation = (props) => {
         </a>
       </NavMenu>
 
-      <Login>Login</Login>
+      <Login onClick={handleAuth}>Login</Login>
     </Nav>
   );
 };
