@@ -1,13 +1,37 @@
 import styled from "styled-components";
 import { auth, provider } from "../firebase";
+import { useSelector, useDispatch } from "react-redux";
+import { redirect } from "react-router-dom";
 import { signInWithPopup } from "firebase/auth";
+
+import {
+  selectedUserName,
+  selectedUserPhoto,
+  signInUserHandler,
+  signOutHandler,
+} from "../Features/User/UserSlice";
+
 const MainNavigation = () => {
+  const dispatch = useDispatch();
+  const userName = useSelector(selectedUserName);
+  const userPhoto = useSelector(selectedUserPhoto);
   const handleAuth = async () => {
     const res = await signInWithPopup(auth, provider);
 
     if (res) {
-      console.log(res);
+      setUser(res.user);
     }
+  };
+
+  const setUser = (user) => {
+    // console.log(user.displayName + " " + user.email + " " + user.photoURL);
+    dispatch(
+      signInUserHandler({
+        name: user.displayName,
+        email: user.email,
+        photo: user.photoURL,
+      })
+    );
   };
   return (
     <Nav>
@@ -15,34 +39,39 @@ const MainNavigation = () => {
         <img src="/images/logo.svg" />
       </Logo>
 
-      <NavMenu>
-        <a href="/home">
-          <img src="/images/home-icon.svg" alt="home-icon" />
-          <span>Home</span>
-        </a>
-        <a href="">
-          <img src="/images/search-icon.svg" alt="search -icon" />
-          <span>Search</span>
-        </a>
-        <a href="/">
-          <img src="/images/watchlist-icon.svg" alt="watchilst-icon" />
-          <span>Watchlist</span>
-        </a>
-        <a href="/">
-          <img src="/images/original-icon.svg" alt="oroginals-icon" />
-          <span>Originals</span>
-        </a>
-        <a href="/">
-          <img src="/images/movie-icon.svg" alt="Movie-icon" />
-          <span>Movies</span>
-        </a>
-        <a href="/">
-          <img src="/images/series-icon.svg" alt="series-icon" />
-          <span>Series</span>
-        </a>
-      </NavMenu>
-
-      <Login onClick={handleAuth}>Login</Login>
+      {userName ? (
+        <>
+          <NavMenu>
+            <a href="/home">
+              <img src="/images/home-icon.svg" alt="home-icon" />
+              <span>Home</span>
+            </a>
+            <a href="">
+              <img src="/images/search-icon.svg" alt="search -icon" />
+              <span>Search</span>
+            </a>
+            <a href="/">
+              <img src="/images/watchlist-icon.svg" alt="watchilst-icon" />
+              <span>Watchlist</span>
+            </a>
+            <a href="/">
+              <img src="/images/original-icon.svg" alt="oroginals-icon" />
+              <span>Originals</span>
+            </a>
+            <a href="/">
+              <img src="/images/movie-icon.svg" alt="Movie-icon" />
+              <span>Movies</span>
+            </a>
+            <a href="/">
+              <img src="/images/series-icon.svg" alt="series-icon" />
+              <span>Series</span>
+            </a>
+          </NavMenu>
+          <UserImg src={userPhoto} />
+        </>
+      ) : (
+        <Login onClick={handleAuth}>Login</Login>
+      )}
     </Nav>
   );
 };
@@ -139,6 +168,11 @@ const Login = styled.a`
     color: #000;
     border: transparent;
   }
+`;
+
+const UserImg = styled.img`
+  width: 50px;
+  border-radius: 50%;
 `;
 
 export default MainNavigation;
