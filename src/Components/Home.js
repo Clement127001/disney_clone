@@ -101,6 +101,10 @@ const Container = styled.main`
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
+
+  @media (width<=768px) {
+    padding: 10px 20px;
+  }
 `;
 
 export default Home;
