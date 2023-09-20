@@ -2,26 +2,31 @@ import styled from "styled-components";
 
 const media = [
   {
+    id: 1,
     src: "/images/viewers-disney.png",
     alt: "disney image",
     vidSrc: "/videos/1564674844-disney.mp4",
   },
   {
+    id: 2,
     src: "/images/viewers-marvel.png",
     alt: "marvel image",
     vidSrc: "/videos/1564676115-marvel.mp4",
   },
   {
+    id: 3,
     src: "/images/viewers-pixar.png",
     alt: "pixar image",
     vidSrc: "/videos/1564676714-pixar.mp4",
   },
   {
+    id: 4,
     src: "/images/viewers-starwars.png",
     alt: "starwars image",
     vidSrc: "/videos/1608229455-star-wars.mp4",
   },
   {
+    id: 5,
     src: "/images/viewers-national.png",
     alt: "national image",
     vidSrc: "/videos/1564676296-national-geographic.mp4",
@@ -32,7 +37,7 @@ const ImgViewer = (props) => {
   return (
     <Container>
       {media.map((item) => (
-        <Wrap>
+        <Wrap key={`viewer` + item.id}>
           <img src={item.src} alt={item.alt} />
           <video autoPlay={true} loop={true} playsInline={true} muted>
             <source src={item.vidSrc} type="video/mp4" />
