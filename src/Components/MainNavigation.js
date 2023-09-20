@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import { auth, provider } from "../firebase";
 import { useSelector, useDispatch } from "react-redux";
-import { redirect } from "react-router-dom";
-import { signInWithPopup } from "firebase/auth";
+import { NavLink, useNavigate } from "react-router-dom";
+import { onAuthStateChanged, signInWithPopup } from "firebase/auth";
 
 import {
   selectedUserName,
@@ -10,11 +10,24 @@ import {
   signInUserHandler,
   signOutHandler,
 } from "../Features/User/UserSlice";
+import { useEffect } from "react";
 
 const MainNavigation = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const userName = useSelector(selectedUserName);
   const userPhoto = useSelector(selectedUserPhoto);
+
+  useEffect(() => {
+    console.log("I am running");
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUser(user);
+        navigate("home");
+      }
+    });
+  }, [userName]);
+
   const handleAuth = async () => {
     const res = await signInWithPopup(auth, provider);
 
@@ -35,9 +48,9 @@ const MainNavigation = () => {
   };
   return (
     <Nav>
-      <Logo href="/">
-        <img src="/images/logo.svg" />
-      </Logo>
+      <NavLink to="/home">
+        <img src="/images/logo.svg" width={100} style={{ padding: "10px" }} />
+      </NavLink>
 
       {userName ? (
         <>

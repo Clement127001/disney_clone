@@ -2,6 +2,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Login from "./Components/Login";
 import RootLayout from "./Pages/RootLayout";
 import "./App.css";
+import Home from "./Components/Home";
 
 function App() {
   //creating the routes for the different component
@@ -14,6 +15,10 @@ function App() {
         {
           index: true,
           element: <Login />,
+        },
+        {
+          path: "home",
+          element: <Home />,
         },
       ],
     },
