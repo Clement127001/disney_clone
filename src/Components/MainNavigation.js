@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { auth, provider } from "../firebase";
 import { useSelector, useDispatch } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
-import { onAuthStateChanged, signInWithPopup } from "firebase/auth";
+import { onAuthStateChanged, signInWithPopup, signOut } from "firebase/auth";
 
 import {
   selectedUserName,
@@ -19,7 +19,6 @@ const MainNavigation = () => {
   const userPhoto = useSelector(selectedUserPhoto);
 
   useEffect(() => {
-    console.log("I am running");
     onAuthStateChanged(auth, (user) => {
       if (user) {
         setUser(user);
@@ -29,10 +28,18 @@ const MainNavigation = () => {
   }, [userName]);
 
   const handleAuth = async () => {
-    const res = await signInWithPopup(auth, provider);
+    if (!userName) {
+      const res = signInWithPopup(auth, provider)
+        .then((res) => console.log("User is logged in"))
+        .catch((err) => console.log(err.message));
+    } else if (userName) {
+      signOut(auth)
+        .then((res) => console.log("user is logged out"))
+        .catch((err) => console.log("cannot able to handle logout"));
 
-    if (res) {
-      setUser(res.user);
+      dispatch(signOutHandler());
+
+      navigate("/");
     }
   };
 
@@ -80,7 +87,10 @@ const MainNavigation = () => {
               <span>Series</span>
             </a>
           </NavMenu>
-          <UserImg src={userPhoto} />
+          <Logout>
+            <UserImg src={userPhoto} />
+            <LogoutButton onClick={handleAuth}>Sign Out</LogoutButton>
+          </Logout>
         </>
       ) : (
         <Login onClick={handleAuth}>Login</Login>
@@ -184,8 +194,38 @@ const Login = styled.a`
 `;
 
 const UserImg = styled.img`
-  width: 50px;
+  width: 100%;
   border-radius: 50%;
+  object-fit: cover;
+`;
+
+const LogoutButton = styled.button`
+  background-color: rgb(19, 19, 19);
+  border: 2px solid rgba(151, 151, 151, 0.34);
+  border-radius: 8px;
+  position: absolute;
+  top: 60px;
+  right: 0;
+  width: 100px;
+  padding: 10px;
+  font-size: 14px;
+  color: #f9f9f9;
+  cursor: pointer;
+
+  opacity: 0;
+`;
+
+const Logout = styled.div`
+  cursor: pointer;
+  width: 48px;
+  height: 48px;
+  position: relative;
+
+  &:hover {
+    ${LogoutButton} {
+      opacity: 1;
+    }
+  }
 `;
 
 export default MainNavigation;
