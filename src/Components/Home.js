@@ -1,7 +1,23 @@
 import styled from "styled-components";
+import ImgSlider from "./ImgSlider";
 
 const Home = (props) => {
-  return <div>Home</div>;
+  return (
+    <Container>
+      <ImgSlider />
+    </Container>
+  );
 };
+
+const Container = styled.main`
+  position: relative;
+  padding: 20px 50px;
+  top: 40px;
+  min-height: 100vh;
+  background-image: url("/images/home-background.png");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+`;
 
 export default Home;
