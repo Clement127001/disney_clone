@@ -10,6 +10,7 @@ const Home = (props) => {
 };
 
 const Container = styled.main`
+  overflow: hidden;
   position: relative;
   padding: 20px 50px;
   top: 40px;

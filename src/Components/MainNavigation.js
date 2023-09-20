@@ -218,8 +218,8 @@ const LogoutButton = styled.button`
 
 const Logout = styled.div`
   cursor: pointer;
-  width: 48px;
-  height: 48px;
+  width: 36px;
+  height: 36px;
   position: relative;
 
   &:hover {
