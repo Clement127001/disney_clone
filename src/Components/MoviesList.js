@@ -10,7 +10,7 @@ const MoviesList = ({ data, title }) => {
           (item, index) =>
             index <= 3 && (
               <Wrap key={index}>
-                <Link to={"/movie" + item.id}>
+                <Link to={"/detail/" + item.id}>
                   <img src={item.cardImg} alt={item.title} />
                 </Link>
               </Wrap>
