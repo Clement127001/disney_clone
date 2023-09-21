@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 
 const MoviesList = ({ data, title }) => {
+  console.log(data[0]);
   return (
     <Container>
       <h2>{title}</h2>
